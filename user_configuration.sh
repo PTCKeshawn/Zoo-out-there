@@ -25,11 +25,11 @@ new_user() {
 	userPassword: $pass" > users.ldif 
 
 	ldapadd -x -D "cn=admin,dc=zoo,dc=local" -W -f users.ldif
+	
 	echo "creating user..."
-	sleep 2
 	echo "done!"
-	sleep 1
 }
+
 del_user() {
 	read -p "what is the users uid :" uids
 	ldapdelete -x -D "cn=admin,dc=zoo,dc=local" -W "uid=$uids,dc=zoo,dc=local"
@@ -38,6 +38,7 @@ del_user() {
 	echo "done!"
 	sleep 1
 }
+
 reset_password() {
 	read -p "what is the users uid :" uidss
 	sudo ldappasswd -x -D "cn=admin,dc=zoo,dc=local" -W \
@@ -50,7 +51,12 @@ reset_password() {
 }
 
 while [ "$script" = 1 ]; do
-	read -p -e "do you want to : \ 1.create a user \ 2.delete a user \3 .reset a password \4.exit" what
+	read -p "do you want to : \
+	1.create a user \
+	2.delete a user \
+	3.reset a password \
+	4.exit \
+	>>>>>" what
 	
 	if [[ "$what" = "1" ]]; then
 		new_user
@@ -67,6 +73,3 @@ while [ "$script" = 1 ]; do
 		exit 0
 	fi
 done
-#remember to continue from Fsalazar today on may 23
-
-
